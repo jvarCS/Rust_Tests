@@ -1,0 +1,15 @@
+Why use Rc<RefCell<Employee>>?
+*   Rc lets us have multiple owners to an object in memory. For instance, we can create a Rc type that holds the value 5, clone it, and have two references 
+    to that value that have ownership over it.
+*   Rc by itself creates shared ownership, but the data it points to is immutable. If you need to  mutate it, the data needs to be wrapped in a type that allows
+    interior mutability. This is why we also use RefCell.
+*   RefCell provides interior mutability, which allows us to modify the data pointed to by Rc. 
+*   When using Rc::clone, you are creating a new reference to the data and giving that new reference ownership of the data as well.
+    This means that the new reference is able to modify the data as if it were the original reference because it has ownership, assuming
+    the initial declaration of the data was also wrapped in RefCell or another type that allows for interior mutability.
+
+What is clone() doing?
+*   Rc::clone() creates a shallow copy of data in order to provide the concept of shared ownership over one piece of data. That is,
+    using clone creates new references to data, but does not create new copies of the data itself. A deep copy would instead clone the data itself
+    and store it in memory, but this wouldn't be shared ownership as now two separate data would be under consideration as opposed to just one
+    with Rc::clone.
